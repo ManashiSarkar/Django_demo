@@ -1,17 +1,30 @@
 {% extends 'blog/base.html' %}
 
+{% block title %}
+	{% if not posts %}
+		<title><Classnotes/></title>
+	{% else %}
+		{% for post in posts %}
+			<title>Classnotes:{{post.title}}</title>
+		{% endfor %}
+	{% endif %}
+{% endblock %}
+
 {% block content %}
 
-{% for post in posts %}
-	<div>
-		<h2>{{ post.title }}</h2>
-		<p>{{ post.author.username }}</p>
-		<p>{{ post.created_date }}</p>
-		
-		<p>{{ post.text }}</p>
-	</br>
-	</div>
-{% endfor %}
+	{% if not posts %}
+	<h1 align='center'> This page does not exist </h1>
+	{% endif %}
+
+	{% for post in posts %}
+		<div>
+			<h2>{{ post.title }}</h2>
+			<p>{{ post.author.username }}</p>
+			<p>{{ post.created_date }}</p>
+			
+			<p>{{ post.text }}</p>
+		</div>
+	{% endfor %}
 	
 
 {% endblock %}
