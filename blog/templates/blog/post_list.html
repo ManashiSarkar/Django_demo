@@ -1,16 +1,12 @@
-<html>
-    <head>
-        <title><b>Classnotes</b></title>
-    </head>
-    <body>
-        <div>
+{% extends 'blog/base.html' %}
+{% block content %}
+	<div class='page_header'>
             <h1>LIST OF NOTES</h1>
         </div>
 
         {% for post in posts %}
-	        <div>
-	            <p> [{{ post.created_date }}] <a href=""><b><u>{{ post.title }}</u></b></a></p>
+	        <div class='post'>
+	            <p> [{{ post.author.username }}] <a href=""><b>{{ post.title }}</b></a></p>
 	        </div>
         {% endfor %}
-    </body>
-</html>
+{% endblock %}
