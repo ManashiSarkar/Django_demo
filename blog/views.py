@@ -13,6 +13,7 @@ def post_detail(request,pk):
 	posts = Post.objects.filter(pk=pk)
 	return render(request, 'blog/post_detail.html', {'posts': posts})
 
+# requires login
 def starred_post(request,pk):
 	post = Post.objects.get(pk=pk)
 	post.stars = post.stars+1
