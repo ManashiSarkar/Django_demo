@@ -15,9 +15,10 @@ def post_detail(request,pk):
 
 # requires login
 def starred_post(request,pk):
-	post = Post.objects.get(pk=pk)
-	post.stars = post.stars+1
-	post.save()
+	if request.user.is_authenticated:
+		post = Post.objects.get(pk=pk)
+		post.stars = post.stars+1
+		post.save()
 	return redirect('post_detail', pk=pk)
 
 # requires login
