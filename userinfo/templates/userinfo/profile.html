@@ -1,0 +1,28 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}
+	<title>Classnotes:{{user.username}}</title>
+{% endblock %}
+
+{% block content %}
+
+	<div>
+		<h3>{{user.username}}</h3>
+		<p>{{user.first_name}} {{user.last_name}}<p>
+	</div>
+
+	<table>
+		{% for post in posts %}
+			<tr>
+				<td>
+					<a href="{% url 'post_detail' pk=post.pk %}">{{post.title}}</a>
+				</td>
+				<td>
+					{{ post.stars }}
+				</td>
+			</tr>
+		{% endfor %}
+	</table>
+
+
+{% endblock %}
