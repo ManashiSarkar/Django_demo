@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from .models import Post
+from userinfo.models import PostInfo
 from .forms import PostForm
 
 # Create your views here.
@@ -15,10 +16,19 @@ def post_detail(request,pk):
 
 # requires login
 def starred_post(request,pk):
-	if request.user.is_authenticated:
+	if request.user.is_authenticated and Post.objects.filter(pk=pk):
+		user = request.user
 		post = Post.objects.get(pk=pk)
-		post.stars = post.stars+1
-		post.save()
+
+		if not PostInfo.objects.filter(user=user):
+			PostInfo.objects.create(user=user,post=post)
+
+		elif not PostInfo.objects.filter(user=user).filter(post=post):
+			PostInfo.objects.create(user=user,post=post)
+
+		post_info = PostInfo.objects.filter(user=user).get(post=post)
+		post_info.toggle(post)
+
 	return redirect('post_detail', pk=pk)
 
 # requires login

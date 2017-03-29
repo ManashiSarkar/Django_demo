@@ -5,7 +5,7 @@ from blog.models import Post
 # Create your views here.
 
 def user_detail(request,username=None):
-	if not request.user.is_authenticated:
+	if not request.user.is_authenticated and not username:
 		return redirect('post_list')
 	if not username:
 		username = request.user.username
