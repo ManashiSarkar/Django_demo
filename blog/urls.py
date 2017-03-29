@@ -16,4 +16,13 @@ urlpatterns = [
 
     url(r'^(?P<pk>\d+)/favorite$', views.starred_post, name='starred_post'),
     url(r'^(?P<pk>\d+)/favorite/$', views.starred_post, name='starred_post'),
+
+    url(r'^(?P<pk>\d+)/publish$', views.post_publish, name='post_publish'),
+    url(r'^(?P<pk>\d+)/publish/$', views.post_publish, name='post_publish'),
+
+    url(r'^(?P<pk>\d+)/unpublish$', views.post_unpublish, name='post_unpublish'),
+    url(r'^(?P<pk>\d+)/unpublish/$', views.post_unpublish, name='post_unpublish'),
+
+    url(r'^(?P<pk>\d+)/delete$', views.post_delete, name='post_delete'),
+    url(r'^(?P<pk>\d+)/delete/$', views.post_delete, name='post_delete'),
 ]

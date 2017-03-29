@@ -82,3 +82,44 @@ def post_edit(request, pk):
         form = PostForm(instance=post)
     return render(request, 'blog/post_edit.html', {'form': form})
 
+def post_publish(request,pk):
+	user = request.user
+
+	try:
+		post = get_object_or_404(Post, pk=pk)
+	except:
+		return render(request, 'home/invalidurl.html', {})
+
+	if user.is_authenticated:
+		if user == post.author:
+			post.publish()
+
+	return redirect('user_detail', username=post.author.username)
+
+def post_unpublish(request,pk):
+	user = request.user
+
+	try:
+		post = get_object_or_404(Post, pk=pk)
+	except:
+		return render(request, 'home/invalidurl.html', {})
+
+	if user.is_authenticated:
+		if user == post.author:
+			post.unpublish()
+
+	return redirect('user_detail', username=post.author.username)
+
+def post_delete(request,pk):
+	user = request.user
+
+	try:
+		post = get_object_or_404(Post, pk=pk)
+	except:
+		return render(request, 'home/invalidurl.html', {})
+
+	if user.is_authenticated:
+		if user == post.author:
+			post.delete()
+
+	return redirect('user_detail', username=post.author.username)

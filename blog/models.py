@@ -15,6 +15,20 @@ class Post(models.Model):
 
     def publish(self):
         self.published_date = timezone.now()
+        self.isdeleted = False
+        self.ispublished = True
+        self.save()
+
+    def unpublish(self):
+        #self.published_date = timezone.now()
+        self.isdeleted = False
+        self.ispublished = False
+        self.save()
+
+    def delete(self):
+        self.published_date = timezone.now()
+        self.ispublished = False
+        self.isdeleted = True
         self.save()
 
     def __unicode__(self):

@@ -6,6 +6,7 @@
 
 {% block content %}
 
+	<h1>You can restore notes you deleted</h1>
 	<table>
 		{% for post in posts %}
 			<tr>
@@ -17,6 +18,12 @@
 				</td>
 				<td>
 					{{ post.stars }}
+				</td>
+				<td class="btn btn-default">
+					<a href="{% url 'post_unpublish' pk=post.pk %}">un-publish</a>
+				</td>
+				<td class="btn btn-default">
+					<a href="{% url 'post_publish' pk=post.pk %}">publish</a>
 				</td>
 			</tr>
 		{% endfor %}

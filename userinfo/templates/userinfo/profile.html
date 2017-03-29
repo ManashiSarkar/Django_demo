@@ -11,18 +11,74 @@
 		<p>{{user.first_name}} {{user.last_name}}<p>
 	</div>
 
-	<table>
-		{% for post in posts %}
-			<tr>
-				<td>
-					<a href="{% url 'post_detail' pk=post.pk %}">{{post.title}}</a>
-				</td>
-				<td>
-					{{ post.stars }}
-				</td>
-			</tr>
-		{% endfor %}
-	</table>
+	<div>
+		<h3> Published Notes: </h3>
+		<table>
+			{% for post in posts %}
+				{% if post.ispublished and not post.isdeleted %}
+					<tr>
+						<td>
+							<a href="{% url 'post_detail' pk=post.pk %}">{{post.title}}</a>
+						</td>
+						<td>
+							{{ post.stars }}
+						</td>
+						{% if user == request.user %}
+							<td class="btn btn-default">
+								<a href="{% url 'post_unpublish' pk=post.pk %}">un-publish</a>
+							</td>
+							<td class="btn btn-default">
+								<a href="{% url 'post_delete' pk=post.pk %}">delete</a>
+							</td>
+						{% endif %}
+					</tr>
+				{% endif %}
+			{% endfor %}
+		</table>
+	</div>
 
+	</br>
+
+	{% if user == request.user %}
+
+		<div>
+			<h3> Un-published Notes: </h3>
+			<table>
+				{% for post in posts %}
+					{% if not post.ispublished and not post.isdeleted %}
+						<tr>
+							<td>
+								<a href="{% url 'post_detail' pk=post.pk %}">{{post.title}}</a>
+							</td>
+							<td>
+								{{ post.stars }}
+							</td>
+							<td class="btn btn-default">
+								<a href="{% url 'post_publish' pk=post.pk %}">publish</a>
+							</td>
+							<td class="btn btn-default">
+								<a href="{% url 'post_delete' pk=post.pk %}">delete</a>
+							</td>
+						</tr>
+					{% endif %}
+				{% endfor %}
+			</table>
+		</div>
+
+		</br>
+
+		<div class="btn btn-default" >
+			<a href="{% url 'user_bin' username=user.username %}">Deleted Notes</a>
+		</div>
+
+	{% endif %}
 
 {% endblock %}
+
+
+
+
+
+
+
+

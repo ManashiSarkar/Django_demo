@@ -22,10 +22,10 @@
 		{% if postinfo %}
 			{% if post.author != request.user %}
 				{% if postinfo.isfavorite is True %}
-					<a class="btn btn-default" href="{% url 'starred_post' pk=post.pk %}"><span class="glyphicon glyphicon-radio"></span></a>
+					<a class="btn btn-default" href="{% url 'starred_post' pk=post.pk %}"><span class="glyphicon glyphicon-minus"></span></a>
 				
 				{% else %}
-					<a class="btn btn-default" href="{% url 'starred_post' pk=post.pk %}"><span class="glyphicon glyphicon-star"></span></a>
+					<a class="btn btn-default" href="{% url 'starred_post' pk=post.pk %}"><span class="glyphicon glyphicon-plus"></span></a>
 				{% endif %}
 			{% endif %}
 		{% endif %}
