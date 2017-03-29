@@ -18,7 +18,17 @@
 
 	<div>
 		<h2>{{ post.title }}</h2>
-		<a class="btn btn-default" href="{% url 'starred_post' pk=post.pk %}"><span class="glyphicon glyphicon-star"></span></a>
+
+		{% if postinfo %}
+			{% if post.author != request.user %}
+				{% if postinfo.isfavorite is True %}
+					<a class="btn btn-default" href="{% url 'starred_post' pk=post.pk %}"><span class="glyphicon glyphicon-radio"></span></a>
+				
+				{% else %}
+					<a class="btn btn-default" href="{% url 'starred_post' pk=post.pk %}"><span class="glyphicon glyphicon-star"></span></a>
+				{% endif %}
+			{% endif %}
+		{% endif %}
 
 		<a href="{% url 'user_detail' username=post.author.username %}">{{ post.author.username }}</a>
 		<p>{{ post.created_date }}</p>

@@ -24,5 +24,5 @@ urlpatterns = [
     url(r'^user/',include('userinfo.urls')),
     url(r'^accounts/', include('allauth.urls')),
 
-    url(r'',views.invalidurl,name='invalidurl'),
+    url(r'$',views.invalidurl,name='invalidurl'),
 ]

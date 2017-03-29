@@ -14,22 +14,38 @@ def post_detail(request,pk):
 	try:
 		post = get_object_or_404(Post, pk=pk)
 	except:
-		print 'here'
 		return render( request, 'home/doesnotexist.html', {} )
-	return render(request, 'blog/post_detail.html', {'post': post})
+
+	user = request.user
+
+	if user.is_authenticated:
+		try:
+			postinfo = PostInfo.objects.filter(user=user).get(post=post)
+		except:
+			PostInfo.objects.create(user=user,post=post)
+			postinfo = PostInfo.objects.filter(user=user).get(post=post)
+		
+		context = {'post': post,'postinfo': postinfo}
+
+		#print post.user + ' ' + request.user
+
+	else:
+		context = {'post': post,'postinfo': None}
+
+	return render(request, 'blog/post_detail.html', context)
 
 # requires login
 def starred_post(request,pk):
 	user = request.user
 	if user.is_authenticated and Post.objects.filter(pk=pk):
 		post = Post.objects.get(pk=pk)
-
+		'''
 		if not PostInfo.objects.filter(user=user):
 			PostInfo.objects.create(user=user,post=post)
 
 		elif not PostInfo.objects.filter(user=user).filter(post=post):
 			PostInfo.objects.create(user=user,post=post)
-
+		'''
 		post_info = PostInfo.objects.filter(user=user).get(post=post)
 		post_info.toggle(post)
 
