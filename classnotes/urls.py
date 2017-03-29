@@ -15,11 +15,14 @@ Including another URLconf
 """
 from django.conf.urls import include, url
 from django.contrib import admin
+from home import views
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$',include('blog.urls')), #this will later become home page
+    url(r'^$',views.index,name='index'),
     url(r'^post/',include('blog.urls')),
     url(r'^user/',include('userinfo.urls')),
     url(r'^accounts/', include('allauth.urls')),
+
+    url(r'',views.invalidurl,name='invalidurl'),
 ]

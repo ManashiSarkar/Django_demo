@@ -10,11 +10,31 @@ def user_detail(request,username=None):
 	if not username:
 		username = request.user.username
 		return redirect('user_detail', username=username)
+	print 'lol'
+	try:
+		user = get_object_or_404(User, username=username)
+	except:
+		print username
+		return render( request, 'home/doesnotexist.html', {} )
+		#return redirect('doesnotexist',pk=0) #error
 
-	user = get_object_or_404(User, username=username)
+	print 'after user'
 	posts = Post.objects.filter(author=user)
+	print 'after posts'
 	context = {'user':user,'posts':posts}
 	template = 'userinfo/profile.html'
+	return render( request, template, context )
+
+def user_bin(request,username=None):
+	user = request.user
+	if not user.is_authenticated:
+		return redirect('user_detail', username=username)
+	if user.username != username:
+		return redirect('user_detail', username=username)
+
+	deleted = Post.objects.filter(author=user).filter(isdeleted=True)
+	context = {'user':user,'posts':deleted}
+	template = 'userinfo/bin.html'
 	return render( request, template, context )
 	
 

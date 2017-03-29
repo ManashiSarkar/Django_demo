@@ -11,13 +11,17 @@ def post_list(request):
 	return render(request, 'blog/post_list.html', {'posts': posts})
 
 def post_detail(request,pk):
-	posts = Post.objects.filter(pk=pk)
-	return render(request, 'blog/post_detail.html', {'posts': posts})
+	try:
+		post = get_object_or_404(Post, pk=pk)
+	except:
+		print 'here'
+		return render( request, 'home/doesnotexist.html', {} )
+	return render(request, 'blog/post_detail.html', {'post': post})
 
 # requires login
 def starred_post(request,pk):
-	if request.user.is_authenticated and Post.objects.filter(pk=pk):
-		user = request.user
+	user = request.user
+	if user.is_authenticated and Post.objects.filter(pk=pk):
 		post = Post.objects.get(pk=pk)
 
 		if not PostInfo.objects.filter(user=user):
@@ -42,7 +46,7 @@ def post_new(request):
 			post.save()
 			return redirect('post_detail', pk=post.pk)
 		else:
-			return redirect('post_detail', pk=1000000000)
+			return render( request, 'home/invalidform.html', {} )
 	else:
 		form = PostForm()
 	return render(request, 'blog/post_edit.html', {'form': form})
@@ -61,5 +65,4 @@ def post_edit(request, pk):
     else:
         form = PostForm(instance=post)
     return render(request, 'blog/post_edit.html', {'form': form})
-
 
