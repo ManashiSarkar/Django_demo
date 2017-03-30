@@ -7,7 +7,16 @@
 {% block content %}
 
 	<div>
-		<h3>{{user.username}}</h3>
+		<h2>{{user.username}}</h2>
+		{% if request.user.is_authenticated and user != request.user %}
+			<h4 class="btn btn-default">
+				{% if following.isfollowing %}
+					<a href="{% url 'user_unfollow' username=user.username %}">unfollow</a>
+				{% else %}
+					<a href="{% url 'user_follow' username=user.username %}">follow</a>
+				{% endif %}
+			</h4>
+		{% endif %}
 		<p>{{user.first_name}} {{user.last_name}}<p>
 	</div>
 

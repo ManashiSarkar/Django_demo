@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
 from .models import Post
-from userinfo.models import PostInfo
 from .forms import PostForm
+from userinfo.models import PostInfo
 from comment.models import Comment
 from comment.forms import CommentForm
 
@@ -65,7 +65,7 @@ def starred_post(request,pk):
 		post = Post.objects.get(pk=pk)
 
 		if post.author == user or post.ispublished == False:
-			redirect('post_detail', pk=pk)
+			return redirect('post_detail', pk=pk)
 
 		'''
 		if not PostInfo.objects.filter(user=user):

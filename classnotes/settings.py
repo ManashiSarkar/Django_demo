@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'blog',
     'userinfo',
     'comment',
+    'follow',
     'django.contrib.sites',
     'allauth',
     'allauth.account',
