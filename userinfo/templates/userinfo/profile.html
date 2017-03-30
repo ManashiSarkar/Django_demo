@@ -25,7 +25,7 @@
 						</td>
 						{% if user == request.user %}
 							<td class="btn btn-default">
-								<a href="{% url 'post_unpublish' pk=post.pk %}">un-publish</a>
+								<a href="{% url 'post_unpublish' pk=post.pk %}">draft</a>
 							</td>
 							<td class="btn btn-default">
 								<a href="{% url 'post_delete' pk=post.pk %}">delete</a>
@@ -42,7 +42,7 @@
 	{% if user == request.user %}
 
 		<div>
-			<h3> Un-published Notes: </h3>
+			<h3> Drafts: </h3>
 			<table>
 				{% for post in posts %}
 					{% if not post.ispublished and not post.isdeleted %}
@@ -75,7 +75,8 @@
 
 {% endblock %}
 
-
+{% block deleted %}
+{% endblock %}
 
 
 

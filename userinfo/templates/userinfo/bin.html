@@ -1,33 +1,101 @@
 {% extends 'blog/base.html' %}
 
 {% block title %}
-	<title>Classnotes:userbin-{{user.username}}</title>
+	<title>Classnotes:user-{{user.username}}</title>
 {% endblock %}
 
 {% block content %}
 
-	<h1>You can restore notes you deleted</h1>
-	<table>
-		{% for post in posts %}
-			<tr>
-				<td>
-					<a href="{% url 'post_detail' pk=post.pk %}">{{post.title}}</a>
-				</td>
-				<td>
-					{{ post.created_date }}
-				</td>
-				<td>
-					{{ post.stars }}
-				</td>
-				<td class="btn btn-default">
-					<a href="{% url 'post_unpublish' pk=post.pk %}">un-publish</a>
-				</td>
-				<td class="btn btn-default">
-					<a href="{% url 'post_publish' pk=post.pk %}">publish</a>
-				</td>
-			</tr>
-		{% endfor %}
-	</table>
+	<div>
+		<h3>{{user.username}}</h3>
+		<p>{{user.first_name}} {{user.last_name}}<p>
+	</div>
 
+	<div>
+		<h3> Published Notes: </h3>
+		<table>
+			{% for post in posts %}
+				{% if post.ispublished and not post.isdeleted %}
+					<tr>
+						<td>
+							<a href="{% url 'post_detail' pk=post.pk %}">{{post.title}}</a>
+						</td>
+						<td>
+							{{ post.stars }}
+						</td>
+						{% if user == request.user %}
+							<td class="btn btn-default">
+								<a href="{% url 'post_unpublish' pk=post.pk %}">draft</a>
+							</td>
+							<td class="btn btn-default">
+								<a href="{% url 'post_delete' pk=post.pk %}">delete</a>
+							</td>
+						{% endif %}
+					</tr>
+				{% endif %}
+			{% endfor %}
+		</table>
+	</div>
+
+	</br>
+
+	{% if user == request.user %}
+
+		<div>
+			<h3> Drafts: </h3>
+			<table>
+				{% for post in posts %}
+					{% if not post.ispublished and not post.isdeleted %}
+						<tr>
+							<td>
+								<a href="{% url 'post_detail' pk=post.pk %}">{{post.title}}</a>
+							</td>
+							<td>
+								{{ post.stars }}
+							</td>
+							<td class="btn btn-default">
+								<a href="{% url 'post_publish' pk=post.pk %}">publish</a>
+							</td>
+							<td class="btn btn-default">
+								<a href="{% url 'post_delete' pk=post.pk %}">delete</a>
+							</td>
+						</tr>
+					{% endif %}
+				{% endfor %}
+			</table>
+		</div>
+
+		</br>
+
+		<h3>Deleted Notes</h3>
+
+		<table>
+			{% for post in posts %}
+				{% if post.isdeleted %}
+					<tr>
+						<td>
+							<a href="{% url 'post_detail' pk=post.pk %}">{{post.title}}</a>
+						</td>
+						<td>
+							{{ post.created_date }}
+						</td>
+						<td>
+							{{ post.stars }}
+						</td>
+						<td class="btn btn-default">
+							<a href="{% url 'post_unpublish' pk=post.pk %}">draft</a>
+						</td>
+						<td class="btn btn-default">
+							<a href="{% url 'post_publish' pk=post.pk %}">publish</a>
+						</td>
+						<td class="btn btn-default">
+							<a href="{% url 'post_discard' pk=post.pk %}">discard</a>
+						</td>
+					</tr>
+				{% endif %}
+			{% endfor %}
+		</table>
+
+	{% endif %}
 
 {% endblock %}

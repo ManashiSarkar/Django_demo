@@ -123,3 +123,17 @@ def post_delete(request,pk):
 			post.delete()
 
 	return redirect('user_detail', username=post.author.username)
+
+def post_discard(request,pk):
+	user = request.user
+
+	try:
+		post = get_object_or_404(Post, pk=pk)
+	except:
+		return render(request, 'home/invalidurl.html', {})
+
+	if user.is_authenticated:
+		if user == post.author:
+			Post.objects.filter(pk=pk).delete()
+
+	return redirect('user_detail', username=post.author.username)

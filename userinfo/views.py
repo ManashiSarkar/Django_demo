@@ -32,8 +32,8 @@ def user_bin(request,username=None):
 	if user.username != username:
 		return redirect('user_detail', username=username)
 
-	deleted = Post.objects.filter(author=user).filter(isdeleted=True)
-	context = {'user':user,'posts':deleted}
+	posts = Post.objects.filter(author=user) #.filter(isdeleted=True)
+	context = {'user':user,'posts':posts}
 	template = 'userinfo/bin.html'
 	return render( request, template, context )
 	
