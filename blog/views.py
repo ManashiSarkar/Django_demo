@@ -3,6 +3,8 @@ from django.utils import timezone
 from .models import Post
 from userinfo.models import PostInfo
 from .forms import PostForm
+from comment.models import Comment
+from comment.forms import CommentForm
 
 # Create your views here.
 
@@ -18,19 +20,41 @@ def post_detail(request,pk):
 
 	user = request.user
 
+	if not post.ispublished and user != post.author:
+		return render( request, 'home/doesnotexist.html', {} )
+
 	if user.is_authenticated:
 		try:
 			postinfo = PostInfo.objects.filter(user=user).get(post=post)
 		except:
 			PostInfo.objects.create(user=user,post=post)
 			postinfo = PostInfo.objects.filter(user=user).get(post=post)
-		
-		context = {'post': post,'postinfo': postinfo}
 
-		#print post.user + ' ' + request.user
+		if request.method == "POST":
+			form = CommentForm(request.POST)
+			if form.is_valid():
+				comment = form.save(commit=False)
+				comment.author = user
+				comment.post = post
+				comment.created_date = timezone.now()
+				comment.save()
+			else:
+				return render( request, 'home/invalidform.html', {} )
+		
+		form = CommentForm()
+
+		comments = Comment.objects.filter(post=post)
+
+		comments.order_by('created_date')
+
+		context = {'post': post,'postinfo': postinfo,'comments': comments,'form': form}
 
 	else:
-		context = {'post': post,'postinfo': None}
+		comments = Comment.objects.filter(post=post)
+
+		comments.order_by('created_date')
+
+		context = {'post': post,'postinfo': None,'comments': comments,'form': None}
 
 	return render(request, 'blog/post_detail.html', context)
 
@@ -39,6 +63,10 @@ def starred_post(request,pk):
 	user = request.user
 	if user.is_authenticated and Post.objects.filter(pk=pk):
 		post = Post.objects.get(pk=pk)
+
+		if post.author == user or post.ispublished == False:
+			redirect('post_detail', pk=pk)
+
 		'''
 		if not PostInfo.objects.filter(user=user):
 			PostInfo.objects.create(user=user,post=post)
@@ -76,6 +104,7 @@ def post_edit(request, pk):
             post = form.save(commit=False)
             post.author = request.user
             post.published_date = timezone.now()
+            post.isdeleted = False
             post.save()
             return redirect('post_detail', pk=post.pk)
     else:

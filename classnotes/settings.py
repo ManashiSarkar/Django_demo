@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'home',
     'blog',
     'userinfo',
+    'comment',
     'django.contrib.sites',
     'allauth',
     'allauth.account',
@@ -139,7 +140,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 LOGIN_URL = '/accounts/login'
 LOGIN_REDIRECT_URL = '/'
-ACCOUNT_LOGOUT_REDIRECT_URL = '/'
+ACCOUNT_LOGOUT_REDIRECT_URL = '/' # want to change it to stay on the current page
 
 ACCOUNT_AUTHENTICATION_METHOD = "username"
 ACCOUNT_LOGOUT_ON_GET = True
