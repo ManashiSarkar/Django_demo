@@ -28,4 +28,7 @@ urlpatterns = [
 
     url(r'^(?P<pk>\d+)/discard$', views.post_discard, name='post_discard'),
     url(r'^(?P<pk>\d+)/discard/$', views.post_discard, name='post_discard'),
+
+    url(r'^(?P<pk>\d+)/topics$', views.topic_add, name='topic_add'),
+    url(r'^(?P<pk>\d+)/topics/$', views.topic_add, name='topic_add'),
 ]

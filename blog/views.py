@@ -56,6 +56,8 @@ def post_detail(request,pk):
 
 		context = {'post': post,'postinfo': None,'comments': comments,'form': None}
 
+		context['topics'] = Topic.objects.filter(post=post)
+
 	return render(request, 'blog/post_detail.html', context)
 
 # requires login
@@ -166,3 +168,7 @@ def post_discard(request,pk):
 			Post.objects.filter(pk=pk).delete()
 
 	return redirect('user_detail', username=post.author.username)
+
+def topic_add(request,pk):
+	# add topics like comments
+	return redirect('post_detail',pk=pk)

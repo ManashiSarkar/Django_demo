@@ -40,6 +40,15 @@
 	</div>
 
 	<div>
+		<h3>Topics : </h3>
+		{% for topic in topics %}
+			<a class="btn btn-default" href="{% url 'topic_detail' label=topic %}">{{ topic }}
+			</a>
+		{% endfor %}
+		<a class="btn btn-default" href="{% url 'topic_add' pk=post.pk %}"><span class="glyphicon glyphicon-pencil"></span></a>
+	</div>
+
+	<div>
 		<h3>Comments:</h3>
 		<table>
 			{% for comment in comments %}

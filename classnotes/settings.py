@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'userinfo',
     'comment',
     'follow',
+    'topic',
     'django.contrib.sites',
     'allauth',
     'allauth.account',

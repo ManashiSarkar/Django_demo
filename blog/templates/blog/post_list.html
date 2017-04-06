@@ -14,11 +14,14 @@
 
     {% for post in posts %}
         <div class='post'>
-            <p> [{{ post.author.username }}] 
-            	<a href="{% url 'post_detail' pk=post.pk %}">
-            		<b>{{ post.title }}</b>
-            	</a>
-            </p>
+            <table> 
+            	<td><b>[<a href="{% url 'user_detail' username=post.author.username %}">
+            		{{ post.author.username }}</a>]</b>
+            	</td>
+            	<td><a href="{% url 'post_detail' pk=post.pk %}">
+            		<b>{{ post.title }}</b></a>
+            	</td>
+            </table>
         </div>
     {% endfor %}
 {% endblock %}

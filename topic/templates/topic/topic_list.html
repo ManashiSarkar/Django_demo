@@ -1,0 +1,12 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+	<div>
+		<h2>LIST OF TOPICS</h2>
+	</div>
+
+	{% for topic in topics %}
+		<a href="{% url 'topic_detail' label=topic.label %}">{{ topic.label }}</a>
+	{% endfor %}
+
+{% endblock %}

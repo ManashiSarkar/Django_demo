@@ -22,6 +22,7 @@ urlpatterns = [
     url(r'^$',views.index,name='index'),
     url(r'^post/',include('blog.urls')),
     url(r'^user/',include('userinfo.urls')),
+    url(r'^topic/',include('topic.urls')),
     url(r'^accounts/', include('allauth.urls')),
 
     url(r'$',views.invalidurl,name='invalidurl'),

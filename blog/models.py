@@ -12,6 +12,7 @@ class Post(models.Model):
     stars = models.IntegerField(blank=True, default=0)
     ispublished = models.BooleanField(default=False)
     isdeleted = models.BooleanField(default=False)
+    topic = models.ManyToManyField('topic.Topic')
 
     def publish(self):
         self.published_date = timezone.now()
